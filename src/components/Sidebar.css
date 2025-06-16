@@ -1,0 +1,72 @@
+/* 侧边栏主容器样式 */
+.sidebar {
+  width: 300px; /* 固定宽度300px */
+  min-width: 300px; /* 最小宽度300px，防止压缩 */
+  background: var(--primary-color); /* 使用主题色作为背景 */
+  min-height: 100vh; /* 最小高度为视口高度，确保占满屏幕 */
+  box-sizing: border-box; /* 边框盒模型，padding和border计入总宽度 */
+  position: relative; /* 相对定位，为子元素提供定位参考 */
+  color: #fff; /* 文字颜色为白色 */
+}
+
+/* 侧边栏内容容器，使用固定定位 */
+.sidebar-content {
+  position: fixed; /* 固定定位，不随页面滚动 */
+  width: inherit; /* 继承父元素宽度 */
+}
+
+/* 用户信息区域样式 */
+.sidebar .user {
+  font-weight: bold; /* 加粗字体 */
+  text-align: center; /* 文字居中对齐 */
+  letter-spacing: 1px; /* 字母间距1px */
+  padding: 40px 30px; /* 内边距：上下40px，左右30px */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* 底部边框：白色半透明 */
+}
+
+/* 导航链接区域样式 */
+.sidebar .links {
+  margin-top: 80px; /* 顶部外边距80px */
+  margin-left: 20px; /* 左侧外边距20px */
+}
+
+/* 导航链接列表项样式 */
+.sidebar .links li {
+  margin-top: 10px; /* 每个链接间距10px */
+}
+
+/* 导航链接样式 */
+.sidebar .links a {
+  display: flex; /* 弹性布局，方便图标和文字对齐 */
+  padding: 10px; /* 内边距10px */
+  text-decoration: none; /* 去除下划线 */
+  width: 100%; /* 宽度100% */
+  color: #fff; /* 文字颜色白色 */
+  box-sizing: border-box; /* 边框盒模型 */
+}
+
+/* 导航链接中的图标样式 */
+.sidebar .links img {
+  margin-right: 10px; /* 图标右侧间距10px */
+  filter: invert(100%); /* 图标颜色反转为白色 */
+}
+
+/* 激活状态的导航链接样式 */
+.sidebar .links a.active {
+  color: #555; /* 文字颜色变为深灰色 */
+  background: var(--bg-color); /* 背景色使用主题背景色 */
+  border-radius: 20px 0 0 20px; /* 左侧圆角，右侧直角 */
+}
+
+/* 激活状态链接中的图标样式 */
+.sidebar .links .active img {
+  filter: invert(40%); /* 图标颜色调整为40%反转 */
+}
+
+/* 侧边栏中的用户头像样式 */
+.sidebar .user .avatar {
+  margin-bottom: 10px; /* 底部外边距10px */
+  width: 70px; /* 宽度70px */
+  height: 70px; /* 高度70px */
+  border: 3px solid #fff; /* 3px白色边框 */
+}
