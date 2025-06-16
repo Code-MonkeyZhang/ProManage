@@ -1,0 +1,40 @@
+/* 导航栏主容器样式 - 设置导航栏的基本布局和间距 */
+.navbar {
+  width: 100%; /* 导航栏占满父容器宽度 */
+  padding: 30px 0; /* 上下内边距30px，左右无内边距 */
+  box-sizing: border-box; /* 边距计算包含在宽度内 */
+  margin-bottom: 80px; /* 导航栏底部外边距，与下方内容保持距离 */
+}
+
+/* 导航栏内的无序列表样式 - 用于水平排列导航项 */
+.navbar ul {
+  display: flex; /* 使用弹性布局，让子元素水平排列 */
+  margin: 0 auto; /* 水平居中对齐 */
+  align-items: center; /* 垂直方向居中对齐所有导航项 */
+  justify-content: flex-end; /* 导航项向右对齐 */
+}
+
+/* Logo样式 - 品牌标识的样式设置 */
+.navbar .logo {
+  font-weight: bold; /* Logo文字加粗 */
+  color: var(--heading-color); /* 使用CSS变量定义的标题颜色 */
+  letter-spacing: 1px; /* 字母间距增加1px，提升视觉效果 */
+  display: flex; /* 弹性布局，便于Logo图标和文字的对齐 */
+  align-items: center; /* Logo内容垂直居中 */
+  margin-right: auto; /* 自动右边距，将Logo推到最左边 */
+}
+
+/* Logo图标样式 - Logo中的图片元素 */
+.navbar .logo img {
+  margin-right: 10px; /* 图标与Logo文字之间的间距 */
+  filter: invert(25%); /* 反转颜色25%，调整图标颜色深度 */
+  width: 36px; /* 图标宽度固定为36px */
+  margin-top: -8px; /* 向上微调8px，优化与文字的垂直对齐 */
+}
+
+/* 导航链接样式 - 所有导航栏内的链接样式 */
+.navbar a {
+  color: #333; /* 链接文字颜色为深灰色 */
+  text-decoration: none; /* 移除链接的下划线 */
+  margin-right: 20px; /* 每个链接右侧间距20px */
+}
