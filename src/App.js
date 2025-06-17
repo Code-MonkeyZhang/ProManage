@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import OnlineUsers from "./components/OnlineUsers";
 
 //styles
 import "./App.css";
@@ -46,6 +47,7 @@ function App() {
               </Route>
             </Switch>
           </div>
+          {user && <OnlineUsers></OnlineUsers>}
         </BrowserRouter>
       )}
     </div>
