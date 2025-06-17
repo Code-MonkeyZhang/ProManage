@@ -7,10 +7,42 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailError, setThumbnailError] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password, displayName);
+    console.log(email, password, displayName, thumbnail);
+  };
+
+  /*
+  Select image file
+  */
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    // set thumbnail back to null
+    setThumbnail(null);
+    let selected = e.target.files[0]; // 选择用户上传的第一个文件
+    console.log(selected);
+
+    if (!selected) {
+      setThumbnailError("Please select a file");
+      return;
+    }
+
+    // if it's not image
+    if (!selected.type.includes("image")) {
+      setThumbnailError("Selected file must be an image");
+      return;
+    }
+
+    if (selected.size > 100000) {
+      setThumbnailError("Image file size must be less than 100kb");
+      return;
+    }
+
+    setThumbnailError(null);
+    setThumbnail(selected);
+    console.log("thumbnail updated");
   };
 
   return (
@@ -46,9 +78,12 @@ export default function Signup() {
         </label>
         <label>
           <span>Profile thumbnail:</span>
-          <input required type="file" />
+          <input required type="file" onChange={handleFileChange} />
+          {thumbnailError && <div className="error">{thumbnailError}</div>}
         </label>
-        <button className="btn">Sign up</button>
+        <button className="btn" onClick={handleSubmit}>
+          Sign up
+        </button>
       </form>
     </div>
   );
