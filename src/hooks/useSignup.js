@@ -25,7 +25,7 @@ export const useSignup = () => {
 
       // upload user images
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`; // 设定上传到数据库的
-      const img = await projectStorage.ref(uploadPath).put(); // 上传
+      const img = await projectStorage.ref(uploadPath).put(thumbnail); // 上传
       const imgUrl = await img.ref.getDownloadURL(); // 取URL
 
       // add display name to user

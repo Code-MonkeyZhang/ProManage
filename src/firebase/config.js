@@ -3,11 +3,6 @@ import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBxkbNgbW2wkWm2JgpXhHxePtkLBLyrgnE",
@@ -22,9 +17,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // init services
-const projectFirestore = firebase.firestore;
+const projectFirestore = firebase.firestore();
 const projectAuth = firebase.auth();
-const projectStorage = firebase.storage;
+const projectStorage = firebase.storage();
 
 //timestamp
 const timestamp = firebase.firestore.Timestamp;

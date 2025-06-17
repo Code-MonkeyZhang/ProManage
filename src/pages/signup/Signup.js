@@ -1,5 +1,7 @@
-// styles
 import { useState } from "react";
+import { useSignup } from "../../hooks/useSignup";
+
+// styles
 import "./Signup.css";
 
 export default function Signup() {
@@ -8,17 +10,18 @@ export default function Signup() {
   const [displayName, setDisplayName] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailError, setThumbnailError] = useState(null);
+  const { signup, isPending, error } = useSignup();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, password, displayName, thumbnail);
+    signup(email, password, displayName, thumbnail);
   };
 
   /*
   Select image file
   */
   const handleFileChange = (e) => {
-    e.preventDefault();
     // set thumbnail back to null
     setThumbnail(null);
     let selected = e.target.files[0]; // 选择用户上传的第一个文件
@@ -47,7 +50,7 @@ export default function Signup() {
 
   return (
     <div>
-      <form className="auth-form">
+      <form onSubmit={handleSubmit} className="auth-form">
         <h2>Sign up</h2>
         <label>
           <span>email:</span>
@@ -81,9 +84,16 @@ export default function Signup() {
           <input required type="file" onChange={handleFileChange} />
           {thumbnailError && <div className="error">{thumbnailError}</div>}
         </label>
-        <button className="btn" onClick={handleSubmit}>
-          Sign up
-        </button>
+
+        {!isPending && <button className="btn">Sign up</button>}
+
+        {isPending && (
+          <button className="btn" disabled>
+            loading
+          </button>
+        )}
+
+        {error && <div className="error">{error}</div>}
       </form>
     </div>
   );
