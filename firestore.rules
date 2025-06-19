@@ -2,8 +2,23 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 7, 16);
+
+    // 用户集合：/users/{user_id}
+    match /users/{user_id} {
+      // 允许已认证的用户读取和创建用户文档（任何注册用户都可以）
+      allow read, create: if request.auth != null;
+
+      // 仅当用户是文档本人（user_id 与其 UID 相同）时，才允许更新
+      allow update: if request.auth.uid == user_id;
+    }
+
+    // 项目集合：/projects/{project_id}
+    match /project/{project_id} {
+      // 任何已认证的用户都可以读取、创建和更新项目文档
+      allow read, create, update: if request.auth != null;
+
+      // 只有项目的创建者（createdBy.id 与当前用户 UID 相同）才可以删除该项目
+      allow delete: if request.auth.uid == resource.data.createdBy.id;
     }
   }
 }
