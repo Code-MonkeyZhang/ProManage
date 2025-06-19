@@ -1,9 +1,23 @@
 import Avatar from "../../components/Avatar";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useFirestore } from "../../hooks/useFirestore";
+import { useHistory } from "react-router-dom";
 
 export default function ProjectSummary({ project }) {
+  const { deleteDocument } = useFirestore("project");
+  const { user } = useAuthContext();
+  const history = useHistory();
+
+  const handleClick = (e) => {
+    deleteDocument(project.id);
+    history.push("/");
+  };
+
   return (
     <div>
       <div className="project-summary">
+        <h2 className="page-title">{project.name}</h2>
+        <p>By {project.createdBy.displayName}</p>
         <p className="due-date">
           Project due by {project.dueDate.toDate().toDateString()}
         </p>
@@ -20,6 +34,11 @@ export default function ProjectSummary({ project }) {
           ))}
         </div>
       </div>
+      {user.uid === project.createdBy.id && (
+        <button className="btn" onClick={handleClick}>
+          Mark as Complete
+        </button>
+      )}
     </div>
   );
 }
