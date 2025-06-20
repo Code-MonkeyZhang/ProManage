@@ -4,10 +4,10 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import Avatar from "../../components/Avatar";
 import { ProjectCommentsProps } from "../../types";
-import { PROJECT_FIELDS } from "../../constants/firebase";
+import { COLLECTIONS, PROJECT_FIELDS } from "../../constants/firebase";
 
 export default function ProjectComments({ project }: ProjectCommentsProps) {
-  const { updateDocument, response } = useFirestore("PROJECTS");
+  const { updateDocument, response } = useFirestore(COLLECTIONS.PROJECTS);
   const [newComment, setNewComment] = useState<string>("");
   const { user } = useAuthContext();
 

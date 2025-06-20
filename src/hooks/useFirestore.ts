@@ -53,13 +53,13 @@ const firestoreReducer = (
 };
 
 export const useFirestore = (
-  collectionName: keyof typeof COLLECTIONS
+  collectionName: (typeof COLLECTIONS)[keyof typeof COLLECTIONS]
 ): UseFirestoreReturn => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
   // collection ref
-  const ref = collection(projectFirestore, COLLECTIONS[collectionName]);
+  const ref = collection(projectFirestore, collectionName);
 
   // only dispatch is not cancelled
   const dispatchIfNotCancelled = (action: FirestoreAction) => {
@@ -89,7 +89,7 @@ export const useFirestore = (
     dispatch({ type: "IS_PENDING" });
 
     try {
-      await deleteDoc(doc(projectFirestore, COLLECTIONS[collectionName], id));
+      await deleteDoc(doc(projectFirestore, collectionName, id));
       dispatchIfNotCancelled({ type: "DELETED_DOCUMENT" });
     } catch (err: any) {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
@@ -100,7 +100,7 @@ export const useFirestore = (
     dispatch({ type: "IS_PENDING" });
     try {
       const updatedDocument = await updateDoc(
-        doc(projectFirestore, COLLECTIONS[collectionName], id),
+        doc(projectFirestore, collectionName, id),
         updates
       );
       dispatchIfNotCancelled({

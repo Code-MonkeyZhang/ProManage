@@ -4,13 +4,13 @@ import ProjectList from "../../components/ProjectList";
 import ProjectFilter from "./ProjectFilter";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Project } from "../../types";
-import { PROJECT_FILTERS } from "../../constants/firebase";
+import { COLLECTIONS, PROJECT_FILTERS } from "../../constants/firebase";
 
 // styles
 import "./Dashboard.css";
 
 export default function Dashboard() {
-  const { documents, error } = useCollection("PROJECTS");
+  const { documents, error } = useCollection(COLLECTIONS.PROJECTS);
   const [filter, setFilter] = useState<string>(PROJECT_FILTERS.ALL);
   const { user } = useAuthContext();
 

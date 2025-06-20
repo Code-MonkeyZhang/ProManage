@@ -1,6 +1,7 @@
 import React from "react";
 import { useCollection } from "../hooks/useCollection";
 import Avatar from "./Avatar";
+import { COLLECTIONS } from "../constants/firebase";
 
 //Style
 import "./OnlineUsers.css";
@@ -13,7 +14,7 @@ interface OnlineUser {
 }
 
 export default function OnlineUsers() {
-  const { error, documents } = useCollection("USERS");
+  const { error, documents } = useCollection(COLLECTIONS.USERS);
 
   return (
     <div className="user-list">

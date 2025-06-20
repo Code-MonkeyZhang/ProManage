@@ -4,9 +4,10 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 import { ProjectSummaryProps } from "../../types";
+import { COLLECTIONS } from "../../constants/firebase";
 
 export default function ProjectSummary({ project }: ProjectSummaryProps) {
-  const { deleteDocument } = useFirestore("PROJECTS");
+  const { deleteDocument } = useFirestore(COLLECTIONS.PROJECTS);
   const { user } = useAuthContext();
   const navigate = useNavigate();
 

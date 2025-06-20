@@ -23,7 +23,7 @@ type QueryConstraint = [string, WhereFilterOp, any];
 type OrderByConstraint = [string, OrderByDirection];
 
 export const useCollection = (
-  collectionName: keyof typeof COLLECTIONS,
+  collectionName: (typeof COLLECTIONS)[keyof typeof COLLECTIONS],
   _query?: QueryConstraint,
   _orderBy?: OrderByConstraint
 ): UseCollectionReturn => {
@@ -36,7 +36,7 @@ export const useCollection = (
   const orderByConstraint = useRef(_orderBy).current;
 
   useEffect(() => {
-    let ref = collection(projectFirestore, COLLECTIONS[collectionName]);
+    let ref = collection(projectFirestore, collectionName);
     let q: any = ref;
 
     if (queryConstraints) {

@@ -9,7 +9,7 @@ import { UseDocumentReturn } from "../types";
 import { COLLECTIONS } from "../constants/firebase";
 
 export const useDocument = (
-  collectionName: keyof typeof COLLECTIONS,
+  collectionName: (typeof COLLECTIONS)[keyof typeof COLLECTIONS],
   id: string
 ): UseDocumentReturn => {
   const [document, setDocument] = useState<any | null>(null);
@@ -17,7 +17,7 @@ export const useDocument = (
 
   // realtime data for document
   useEffect(() => {
-    const ref = doc(projectFirestore, COLLECTIONS[collectionName], id);
+    const ref = doc(projectFirestore, collectionName, id);
 
     const unsubscribe = onSnapshot(
       ref,

@@ -4,7 +4,7 @@ import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
-import { PROJECT_CATEGORIES } from "../../constants/firebase";
+import { COLLECTIONS, PROJECT_CATEGORIES } from "../../constants/firebase";
 
 // Style
 import "./Create.css";
@@ -29,9 +29,9 @@ const categories: CategoryOption[] = [
 
 export default function Create() {
   const navigate = useNavigate();
-  const { addDocument, response } = useFirestore("PROJECTS");
+  const { addDocument, response } = useFirestore(COLLECTIONS.PROJECTS);
 
-  const { documents } = useCollection("USERS");
+  const { documents } = useCollection(COLLECTIONS.USERS);
   const [users, setUsers] = useState<UserOption[]>([]);
   const { user } = useAuthContext();
 
