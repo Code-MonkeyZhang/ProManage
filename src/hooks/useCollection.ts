@@ -12,12 +12,22 @@ import {
   where,
   orderBy as firestoreOrderBy,
   onSnapshot,
+  WhereFilterOp,
+  OrderByDirection,
 } from "firebase/firestore";
 import { projectFirestore } from "../firebase/config";
+import { UseCollectionReturn } from "../types";
 
-export const useCollection = (collectionName, _query, _orderBy) => {
-  const [documents, setDocuments] = useState(null);
-  const [error, setError] = useState(null);
+type QueryConstraint = [string, WhereFilterOp, any];
+type OrderByConstraint = [string, OrderByDirection];
+
+export const useCollection = (
+  collectionName: string,
+  _query?: QueryConstraint,
+  _orderBy?: OrderByConstraint
+): UseCollectionReturn => {
+  const [documents, setDocuments] = useState<any[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // if we don't use a ref --> infinite loop in useEffect
   // _query is an array and is "different" on every function call
@@ -26,7 +36,7 @@ export const useCollection = (collectionName, _query, _orderBy) => {
 
   useEffect(() => {
     let ref = collection(projectFirestore, collectionName);
-    let q = ref;
+    let q: any = ref;
 
     if (queryConstraints) {
       q = query(ref, where(...queryConstraints));
@@ -44,9 +54,9 @@ export const useCollection = (collectionName, _query, _orderBy) => {
 
     const unsubscribe = onSnapshot(
       q,
-      (snapshot) => {
-        let results = [];
-        snapshot.docs.forEach((doc) => {
+      (snapshot: any) => {
+        let results: any[] = [];
+        snapshot.docs.forEach((doc: any) => {
           results.push({ ...doc.data(), id: doc.id });
         });
 
@@ -54,7 +64,7 @@ export const useCollection = (collectionName, _query, _orderBy) => {
         setDocuments(results);
         setError(null);
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
         setError("could not fetch the data");
       }

@@ -1,10 +1,12 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import Avatar from "../components/Avatar";
+import { ProjectListProps } from "../types";
 
 // styles
 import "./ProjectList.css";
 
-export default function ProjectList({ projects }) {
+export default function ProjectList({ projects }: ProjectListProps) {
   return (
     <div className="project-list">
       {projects.length === 0 && <p>No Project Yet!</p>}

@@ -8,14 +8,20 @@ import {
   projectFirestore,
 } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { UseSignupReturn } from "../types";
 
-export const useSignup = () => {
-  const [isCancelled, setIsCancelled] = useState(false);
-  const [error, setError] = useState(null);
-  const [isPending, setIsPending] = useState(false);
+export const useSignup = (): UseSignupReturn => {
+  const [isCancelled, setIsCancelled] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (email, password, displayName, thumbnail) => {
+  const signup = async (
+    email: string,
+    password: string,
+    displayName: string,
+    thumbnail: File
+  ): Promise<void> => {
     // update status
     setError(null);
     setIsPending(true);
@@ -56,7 +62,7 @@ export const useSignup = () => {
         setIsPending(false);
         setError(null);
       }
-    } catch (err) {
+    } catch (err: any) {
       if (!isCancelled) {
         setError(err.message);
         setIsPending(false);

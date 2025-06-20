@@ -1,14 +1,16 @@
+import React from "react";
 import Avatar from "../../components/Avatar";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
+import { ProjectSummaryProps } from "../../types";
 
-export default function ProjectSummary({ project }) {
+export default function ProjectSummary({ project }: ProjectSummaryProps) {
   const { deleteDocument } = useFirestore("project");
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     deleteDocument(project.id);
     navigate("/");
   };
@@ -34,7 +36,7 @@ export default function ProjectSummary({ project }) {
           ))}
         </div>
       </div>
-      {user.uid === project.createdBy.id && (
+      {user?.uid === project.createdBy.id && (
         <button className="btn" onClick={handleClick}>
           Mark as Complete
         </button>

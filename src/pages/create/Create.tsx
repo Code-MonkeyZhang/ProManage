@@ -1,15 +1,26 @@
-import { useEffect, useState } from "react";
-import Select from "react-select";
+import React, { useEffect, useState, FormEvent } from "react";
+import Select, { MultiValue, SingleValue } from "react-select";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
+import { SelectOption } from "../../types";
 
 // Style
 import "./Create.css";
 import { useCollection } from "../../hooks/useCollection";
 
-const categories = [
+interface CategoryOption {
+  value: string;
+  label: string;
+}
+
+interface UserOption {
+  value: any;
+  label: string;
+}
+
+const categories: CategoryOption[] = [
   { value: "development", label: "Development" },
   { value: "design", label: "Design" },
   { value: "sales", label: "Sales" },
@@ -21,27 +32,27 @@ export default function Create() {
   const { addDocument, response } = useFirestore("project");
 
   const { documents } = useCollection("users");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserOption[]>([]);
   const { user } = useAuthContext();
 
   // form field values
-  const [name, setName] = useState("");
-  const [details, setDetails] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [category, setCategory] = useState("");
-  const [assignedUsers, setAssignedUsers] = useState([]);
-  const [formError, setFormError] = useState(null);
+  const [name, setName] = useState<string>("");
+  const [details, setDetails] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string>("");
+  const [category, setCategory] = useState<CategoryOption | null>(null);
+  const [assignedUsers, setAssignedUsers] = useState<UserOption[]>([]);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     if (documents) {
-      const options = documents.map((user) => {
+      const options = documents.map((user: any) => {
         return { value: user, label: user.displayName };
       });
       setUsers(options);
     }
   }, [documents]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError(null);
 
@@ -57,9 +68,9 @@ export default function Create() {
     }
 
     const createdBy = {
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      id: user.uid,
+      displayName: user?.displayName || "",
+      photoURL: user?.photoURL || "",
+      id: user?.uid || "",
     };
 
     const assignedUsersList = assignedUsers.map((u) => {
@@ -88,6 +99,14 @@ export default function Create() {
     if (!response.error) {
       navigate("/");
     }
+  };
+
+  const handleCategoryChange = (option: SingleValue<CategoryOption>) => {
+    setCategory(option);
+  };
+
+  const handleAssignedUsersChange = (option: MultiValue<UserOption>) => {
+    setAssignedUsers(Array.from(option));
   };
 
   return (
@@ -124,16 +143,13 @@ export default function Create() {
 
         <label>
           <span>Project category:</span>
-          <Select
-            onChange={(option) => setCategory(option)}
-            options={categories}
-          />
+          <Select onChange={handleCategoryChange} options={categories} />
         </label>
 
         <label>
           <span>Assign to:</span>
           <Select
-            onChange={(option) => setAssignedUsers(option)}
+            onChange={handleAssignedUsersChange}
             options={users}
             isMulti
           />

@@ -5,10 +5,14 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { projectFirestore } from "../firebase/config";
+import { UseDocumentReturn } from "../types";
 
-export const useDocument = (collectionName, id) => {
-  const [document, setDocument] = useState(null);
-  const [error, setError] = useState(null);
+export const useDocument = (
+  collectionName: string,
+  id: string
+): UseDocumentReturn => {
+  const [document, setDocument] = useState<any | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // realtime data for document
   useEffect(() => {

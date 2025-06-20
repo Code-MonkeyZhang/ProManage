@@ -3,14 +3,15 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { projectAuth, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { UseLoginReturn } from "../types";
 
-export const useLogin = () => {
-  const [isCancelled, setIsCancelled] = useState(false);
-  const [error, setError] = useState(null);
-  const [isPending, setIsPending] = useState(false);
+export const useLogin = (): UseLoginReturn => {
+  const [isCancelled, setIsCancelled] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
 
-  const login = async (email, password) => {
+  const login = async (email: string, password: string): Promise<void> => {
     setError(null);
     setIsPending(true);
 
@@ -35,7 +36,7 @@ export const useLogin = () => {
         setIsPending(false);
         setError(null);
       }
-    } catch (err) {
+    } catch (err: any) {
       if (!isCancelled) {
         setError(err.message);
         setIsPending(false);

@@ -1,23 +1,24 @@
-import { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import Avatar from "../../components/Avatar";
+import { ProjectCommentsProps } from "../../types";
 
-export default function ProjectComments({ project }) {
+export default function ProjectComments({ project }: ProjectCommentsProps) {
   const { updateDocument, response } = useFirestore("project");
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState<string>("");
   const { user } = useAuthContext();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const commentToAdd = {
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      displayName: user?.displayName || "",
+      photoURL: user?.photoURL || "",
       content: newComment,
       createdAt: timestamp.fromDate(new Date()),
-      id: Math.random(), // 临时手段
+      id: Math.random().toString(), // 临时手段
     };
 
     console.log(commentToAdd);

@@ -1,4 +1,7 @@
-const filterList = [
+import React from "react";
+import { ProjectFilterProps } from "../../types";
+
+const filterList: string[] = [
   "all",
   "mine",
   "development",
@@ -7,8 +10,11 @@ const filterList = [
   "sales",
 ];
 
-export default function ProjectFilter({ currentFilter, changeFilter }) {
-  const handleClick = (newFilter) => {
+export default function ProjectFilter({
+  currentFilter,
+  changeFilter,
+}: ProjectFilterProps) {
+  const handleClick = (newFilter: string) => {
     changeFilter(newFilter);
   };
 

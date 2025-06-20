@@ -1,30 +1,32 @@
-import { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useSignup } from "../../hooks/useSignup";
 
 // styles
 import "./Signup.css";
 
 export default function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [thumbnail, setThumbnail] = useState(null);
-  const [thumbnailError, setThumbnailError] = useState(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [thumbnailError, setThumbnailError] = useState<string | null>(null);
   const { signup, isPending, error } = useSignup();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(email, password, displayName, thumbnail);
-    signup(email, password, displayName, thumbnail);
+    if (thumbnail) {
+      signup(email, password, displayName, thumbnail);
+    }
   };
 
   /*
   Select image file
   */
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     // set thumbnail back to null
     setThumbnail(null);
-    let selected = e.target.files[0]; // 选择用户上传的第一个文件
+    let selected = e.target.files?.[0]; // 选择用户上传的第一个文件
     console.log(selected);
 
     if (!selected) {

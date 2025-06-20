@@ -7,15 +7,19 @@ import {
   doc,
 } from "firebase/firestore";
 import { projectFirestore, timestamp } from "../firebase/config";
+import { FirestoreState, FirestoreAction, UseFirestoreReturn } from "../types";
 
-let initialState = {
+let initialState: FirestoreState = {
   document: null,
   isPending: false,
   error: null,
-  success: null,
+  success: false,
 };
 
-const firestoreReducer = (state, action) => {
+const firestoreReducer = (
+  state: FirestoreState,
+  action: FirestoreAction
+): FirestoreState => {
   switch (action.type) {
     case "IS_PENDING":
       return { isPending: true, document: null, success: false, error: null };
@@ -47,22 +51,22 @@ const firestoreReducer = (state, action) => {
   }
 };
 
-export const useFirestore = (collectionName) => {
+export const useFirestore = (collectionName: string): UseFirestoreReturn => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
-  const [isCancelled, setIsCancelled] = useState(false);
+  const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
   // collection ref
   const ref = collection(projectFirestore, collectionName);
 
   // only dispatch is not cancelled
-  const dispatchIfNotCancelled = (action) => {
+  const dispatchIfNotCancelled = (action: FirestoreAction) => {
     if (!isCancelled) {
       dispatch(action);
     }
   };
 
   // add a document
-  const addDocument = async (docData) => {
+  const addDocument = async (docData: any): Promise<void> => {
     dispatch({ type: "IS_PENDING" });
 
     try {
@@ -72,24 +76,24 @@ export const useFirestore = (collectionName) => {
         type: "ADDED_DOCUMENT",
         payload: addedDocument,
       });
-    } catch (error) {
+    } catch (error: any) {
       dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
     }
   };
 
   // delete a document
-  const deleteDocument = async (id) => {
+  const deleteDocument = async (id: string): Promise<void> => {
     dispatch({ type: "IS_PENDING" });
 
     try {
       await deleteDoc(doc(projectFirestore, collectionName, id));
       dispatchIfNotCancelled({ type: "DELETED_DOCUMENT" });
-    } catch (err) {
+    } catch (err: any) {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
     }
   };
 
-  const updateDocument = async (id, updates) => {
+  const updateDocument = async (id: string, updates: any): Promise<any> => {
     dispatch({ type: "IS_PENDING" });
     try {
       const updatedDocument = await updateDoc(
@@ -101,7 +105,7 @@ export const useFirestore = (collectionName) => {
         payload: updatedDocument,
       });
       return updatedDocument;
-    } catch (err) {
+    } catch (err: any) {
       dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
       return null;
     }

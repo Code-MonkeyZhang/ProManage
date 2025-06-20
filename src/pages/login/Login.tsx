@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { useLogin } from "../../hooks/useLogin";
 
 // styles
 import "./Login.css";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const { login, isPending, error } = useLogin();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(email, password);
     login(email, password);
