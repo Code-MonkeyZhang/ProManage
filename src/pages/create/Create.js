@@ -3,7 +3,7 @@ import Select from "react-select";
 import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Style
 import "./Create.css";
@@ -17,7 +17,7 @@ const categories = [
 ];
 
 export default function Create() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { addDocument, response } = useFirestore("project");
 
   const { documents } = useCollection("users");
@@ -86,7 +86,7 @@ export default function Create() {
 
     // if success, redirect to dashboard page
     if (!response.error) {
-      history.push("/");
+      navigate("/");
     }
   };
 
