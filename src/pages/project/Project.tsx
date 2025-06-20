@@ -9,7 +9,7 @@ import "./Project.css";
 
 export default function Project() {
   const { id } = useParams<{ id: string }>();
-  const { error, document } = useDocument("project", id || "");
+  const { error, document } = useDocument("PROJECTS", id || "");
 
   if (error) {
     return <div className="error">{error}</div>;

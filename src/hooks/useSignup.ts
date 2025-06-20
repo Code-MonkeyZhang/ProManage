@@ -9,6 +9,7 @@ import {
 } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 import { UseSignupReturn } from "../types";
+import { COLLECTIONS, USER_FIELDS } from "../constants/firebase";
 
 export const useSignup = (): UseSignupReturn => {
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
@@ -49,10 +50,10 @@ export const useSignup = (): UseSignupReturn => {
 
       // create user document
       // the id is based on userID
-      await setDoc(doc(projectFirestore, "users", res.user.uid), {
-        online: true,
-        displayName: displayName,
-        photoURL: imgUrl,
+      await setDoc(doc(projectFirestore, COLLECTIONS.USERS, res.user.uid), {
+        [USER_FIELDS.ONLINE]: true,
+        [USER_FIELDS.DISPLAY_NAME]: displayName,
+        [USER_FIELDS.PHOTO_URL]: imgUrl,
       });
 
       // dispatch login action

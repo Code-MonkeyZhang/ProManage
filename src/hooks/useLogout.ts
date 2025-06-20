@@ -4,6 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { projectAuth, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 import { UseLogoutReturn } from "../types";
+import { COLLECTIONS, USER_FIELDS } from "../constants/firebase";
 
 export const useLogout = (): UseLogoutReturn => {
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
@@ -18,8 +19,8 @@ export const useLogout = (): UseLogoutReturn => {
     try {
       // set user as offline
       const { uid } = user!;
-      await updateDoc(doc(projectFirestore, "users", uid), {
-        online: false,
+      await updateDoc(doc(projectFirestore, COLLECTIONS.USERS, uid), {
+        [USER_FIELDS.ONLINE]: false,
       });
 
       // sign the user out

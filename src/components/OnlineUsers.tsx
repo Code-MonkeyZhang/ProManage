@@ -13,7 +13,7 @@ interface OnlineUser {
 }
 
 export default function OnlineUsers() {
-  const { error, documents } = useCollection("users");
+  const { error, documents } = useCollection("USERS");
 
   return (
     <div className="user-list">

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ProjectSummaryProps } from "../../types";
 
 export default function ProjectSummary({ project }: ProjectSummaryProps) {
-  const { deleteDocument } = useFirestore("project");
+  const { deleteDocument } = useFirestore("PROJECTS");
   const { user } = useAuthContext();
   const navigate = useNavigate();
 

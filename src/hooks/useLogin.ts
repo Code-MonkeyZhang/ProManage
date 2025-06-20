@@ -4,6 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { projectAuth, projectFirestore } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 import { UseLoginReturn } from "../types";
+import { COLLECTIONS, USER_FIELDS } from "../constants/firebase";
 
 export const useLogin = (): UseLoginReturn => {
   const [isCancelled, setIsCancelled] = useState<boolean>(false);
@@ -25,8 +26,8 @@ export const useLogin = (): UseLoginReturn => {
 
       // set user as online
       const { uid } = res.user;
-      await updateDoc(doc(projectFirestore, "users", uid), {
-        online: true,
+      await updateDoc(doc(projectFirestore, COLLECTIONS.USERS, uid), {
+        [USER_FIELDS.ONLINE]: true,
       });
 
       // dispatch login action

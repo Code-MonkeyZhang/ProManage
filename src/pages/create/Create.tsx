@@ -4,7 +4,7 @@ import { timestamp } from "../../firebase/config";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
-import { SelectOption } from "../../types";
+import { PROJECT_CATEGORIES } from "../../constants/firebase";
 
 // Style
 import "./Create.css";
@@ -21,17 +21,17 @@ interface UserOption {
 }
 
 const categories: CategoryOption[] = [
-  { value: "development", label: "Development" },
-  { value: "design", label: "Design" },
-  { value: "sales", label: "Sales" },
-  { value: "marketing", label: "Marketing" },
+  { value: PROJECT_CATEGORIES.DEVELOPMENT, label: "Development" },
+  { value: PROJECT_CATEGORIES.DESIGN, label: "Design" },
+  { value: PROJECT_CATEGORIES.SALES, label: "Sales" },
+  { value: PROJECT_CATEGORIES.MARKETING, label: "Marketing" },
 ];
 
 export default function Create() {
   const navigate = useNavigate();
-  const { addDocument, response } = useFirestore("project");
+  const { addDocument, response } = useFirestore("PROJECTS");
 
-  const { documents } = useCollection("users");
+  const { documents } = useCollection("USERS");
   const [users, setUsers] = useState<UserOption[]>([]);
   const { user } = useAuthContext();
 

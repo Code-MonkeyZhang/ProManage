@@ -4,13 +4,14 @@ import ProjectList from "../../components/ProjectList";
 import ProjectFilter from "./ProjectFilter";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Project } from "../../types";
+import { PROJECT_FILTERS } from "../../constants/firebase";
 
 // styles
 import "./Dashboard.css";
 
 export default function Dashboard() {
-  const { documents, error } = useCollection("project");
-  const [filter, setFilter] = useState<string>("all");
+  const { documents, error } = useCollection("PROJECTS");
+  const [filter, setFilter] = useState<string>(PROJECT_FILTERS.ALL);
   const { user } = useAuthContext();
 
   const changeFilter = (newFilter: string) => {
@@ -20,9 +21,9 @@ export default function Dashboard() {
   const projects = documents
     ? documents.filter((document: Project) => {
         switch (filter) {
-          case "all":
+          case PROJECT_FILTERS.ALL:
             return true;
-          case "mine":
+          case PROJECT_FILTERS.MINE:
             let assignedToMe = false;
             document.assignedUsersList.forEach((u) => {
               if (u.id === user?.uid) {
@@ -30,10 +31,10 @@ export default function Dashboard() {
               }
             });
             return assignedToMe;
-          case "development":
-          case "design":
-          case "sales":
-          case "marketing":
+          case PROJECT_FILTERS.DEVELOPMENT:
+          case PROJECT_FILTERS.DESIGN:
+          case PROJECT_FILTERS.SALES:
+          case PROJECT_FILTERS.MARKETING:
             console.log(document.category, filter);
             return document.category === filter;
           default:

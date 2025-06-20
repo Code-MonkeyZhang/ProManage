@@ -17,12 +17,13 @@ import {
 } from "firebase/firestore";
 import { projectFirestore } from "../firebase/config";
 import { UseCollectionReturn } from "../types";
+import { COLLECTIONS } from "../constants/firebase";
 
 type QueryConstraint = [string, WhereFilterOp, any];
 type OrderByConstraint = [string, OrderByDirection];
 
 export const useCollection = (
-  collectionName: string,
+  collectionName: keyof typeof COLLECTIONS,
   _query?: QueryConstraint,
   _orderBy?: OrderByConstraint
 ): UseCollectionReturn => {
@@ -35,7 +36,7 @@ export const useCollection = (
   const orderByConstraint = useRef(_orderBy).current;
 
   useEffect(() => {
-    let ref = collection(projectFirestore, collectionName);
+    let ref = collection(projectFirestore, COLLECTIONS[collectionName]);
     let q: any = ref;
 
     if (queryConstraints) {

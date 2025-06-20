@@ -1,13 +1,14 @@
 import React from "react";
 import { ProjectFilterProps } from "../../types";
+import { PROJECT_FILTERS } from "../../constants/firebase";
 
 const filterList: string[] = [
-  "all",
-  "mine",
-  "development",
-  "design",
-  "marketing",
-  "sales",
+  PROJECT_FILTERS.ALL,
+  PROJECT_FILTERS.MINE,
+  PROJECT_FILTERS.DEVELOPMENT,
+  PROJECT_FILTERS.DESIGN,
+  PROJECT_FILTERS.MARKETING,
+  PROJECT_FILTERS.SALES,
 ];
 
 export default function ProjectFilter({
