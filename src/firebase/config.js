@@ -1,7 +1,12 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import "firebase/storage";
+// Firebase 9 modular imports
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  connectFirestoreEmulator,
+  Timestamp,
+} from "firebase/firestore";
+import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,14 +19,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// init services
-const projectFirestore = firebase.firestore();
-const projectAuth = firebase.auth();
-const projectStorage = firebase.storage();
+// Initialize Firebase services
+const projectFirestore = getFirestore(app);
+const projectAuth = getAuth(app);
+const projectStorage = getStorage(app);
 
-//timestamp
-const timestamp = firebase.firestore.Timestamp;
+// Initialize timestamp
+const timestamp = Timestamp;
 
 export { projectFirestore, projectAuth, projectStorage, timestamp };

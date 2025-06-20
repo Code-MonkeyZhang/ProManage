@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
 import {
   projectAuth,
   projectStorage,
@@ -19,7 +22,8 @@ export const useSignup = () => {
 
     try {
       // use email & password to sign up
-      const res = await projectAuth.createUserWithEmailAndPassword(
+      const res = await createUserWithEmailAndPassword(
+        projectAuth,
         email,
         password
       );
@@ -30,15 +34,16 @@ export const useSignup = () => {
 
       // upload user images
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`; // 设定上传到数据库的路径
-      const img = await projectStorage.ref(uploadPath).put(thumbnail); // 上传图片
-      const imgUrl = await img.ref.getDownloadURL(); // 获取图片在firebase的URL
+      const imgRef = ref(projectStorage, uploadPath);
+      const uploadResult = await uploadBytes(imgRef, thumbnail); // 上传图片
+      const imgUrl = await getDownloadURL(uploadResult.ref); // 获取图片在firebase的URL
 
       // add display name to user
-      await res.user.updateProfile({ displayName, photoURL: imgUrl });
+      await updateProfile(res.user, { displayName, photoURL: imgUrl });
 
       // create user document
       // the id is based on userID
-      await projectFirestore.collection("users").doc(res.user.uid).set({
+      await setDoc(doc(projectFirestore, "users", res.user.uid), {
         online: true,
         displayName: displayName,
         photoURL: imgUrl,

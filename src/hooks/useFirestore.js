@@ -1,4 +1,11 @@
 import { useReducer, useEffect, useState } from "react";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { projectFirestore, timestamp } from "../firebase/config";
 
 let initialState = {
@@ -40,12 +47,12 @@ const firestoreReducer = (state, action) => {
   }
 };
 
-export const useFirestore = (collection) => {
+export const useFirestore = (collectionName) => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   const [isCancelled, setIsCancelled] = useState(false);
 
   // collection ref
-  const ref = projectFirestore.collection(collection);
+  const ref = collection(projectFirestore, collectionName);
 
   // only dispatch is not cancelled
   const dispatchIfNotCancelled = (action) => {
@@ -55,12 +62,12 @@ export const useFirestore = (collection) => {
   };
 
   // add a document
-  const addDocument = async (doc) => {
+  const addDocument = async (docData) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
       const createdAt = timestamp.fromDate(new Date());
-      const addedDocument = await ref.add({ ...doc, createdAt });
+      const addedDocument = await addDoc(ref, { ...docData, createdAt });
       dispatchIfNotCancelled({
         type: "ADDED_DOCUMENT",
         payload: addedDocument,
@@ -75,7 +82,7 @@ export const useFirestore = (collection) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
-      await ref.doc(id).delete();
+      await deleteDoc(doc(projectFirestore, collectionName, id));
       dispatchIfNotCancelled({ type: "DELETED_DOCUMENT" });
     } catch (err) {
       dispatchIfNotCancelled({ type: "ERROR", payload: "could not delete" });
@@ -85,7 +92,10 @@ export const useFirestore = (collection) => {
   const updateDocument = async (id, updates) => {
     dispatch({ type: "IS_PENDING" });
     try {
-      const updatedDocument = await ref.doc(id).update(updates);
+      const updatedDocument = await updateDoc(
+        doc(projectFirestore, collectionName, id),
+        updates
+      );
       dispatchIfNotCancelled({
         type: "UPDATED_DOCUMENT",
         payload: updatedDocument,

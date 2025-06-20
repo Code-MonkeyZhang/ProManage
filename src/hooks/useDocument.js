@@ -3,17 +3,19 @@
 */
 
 import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
 import { projectFirestore } from "../firebase/config";
 
-export const useDocument = (collection, id) => {
+export const useDocument = (collectionName, id) => {
   const [document, setDocument] = useState(null);
   const [error, setError] = useState(null);
 
   // realtime data for document
   useEffect(() => {
-    const ref = projectFirestore.collection(collection).doc(id);
+    const ref = doc(projectFirestore, collectionName, id);
 
-    const unsubscribe = ref.onSnapshot(
+    const unsubscribe = onSnapshot(
+      ref,
       (snapshot) => {
         // check if snapshot has data
         if (snapshot.data()) {
@@ -33,7 +35,7 @@ export const useDocument = (collection, id) => {
     );
 
     return () => unsubscribe();
-  }, [collection, id]);
+  }, [collectionName, id]);
 
   return { document, error };
 };
